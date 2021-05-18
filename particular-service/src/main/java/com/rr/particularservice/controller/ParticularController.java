@@ -1,20 +1,18 @@
 package com.rr.particularservice.controller;
 
+import com.rr.particularservice.exception.ParticularException;
 import com.rr.particularservice.model.Particular;
 import com.rr.particularservice.service.ParticularService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/particulars")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class ParticularController {
 
     @Autowired
@@ -29,5 +27,27 @@ public class ParticularController {
             return new ResponseEntity<>("particulars", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping
+    public ResponseEntity<?> createSingleParticular(@RequestBody Particular particular) {
+        try {
+            String particularName = particular.getParticularName();
+            Particular particular1 = particularService.createParticular(particularName);
+            return new ResponseEntity<>("Successfully Created: " + particularName , HttpStatus.CREATED);
+        } catch (ParticularException exception) {
+            return new ResponseEntity<>(exception.getException(), exception.getStatus());
+        }
+    };
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSingleParticular(@PathVariable("id") int id, @RequestBody Particular particular) {
+        try {
+            Particular particular1 = particularService.updateParticular(id, particular);
+            return new ResponseEntity<>("Successfully updated.", HttpStatus.CREATED);
+        } catch (ParticularException exception) {
+            return new ResponseEntity<>(exception.getException(), exception.getStatus());
+        }
+    };
+
 
 }
