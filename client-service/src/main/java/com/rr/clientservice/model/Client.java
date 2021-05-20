@@ -35,6 +35,9 @@ public class Client {
     @Column(name = "GstNumber")
     private String gstNumber;
 
+    @Column(name = "IsActive")
+    private boolean isActive;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId", referencedColumnName = "addressId")
     @JsonManagedReference

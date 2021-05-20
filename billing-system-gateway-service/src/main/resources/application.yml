@@ -1,6 +1,5 @@
 server:
   port: 8080
-
 management:
   endpoint:
     gateway:
@@ -9,24 +8,31 @@ management:
     web:
       exposure:
         include: gateway
-
 eureka:
   client:
     register-with-eureka: true
   instance:
     hostname: localhost
-    instance-id: ${spring.application.name}:${server.port}
+    instance-id: '${spring.application.name}:${server.port}'
 spring:
   application:
     name: gateway-service
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
       routes:
         - id: clientService
-          uri: lb://CLIENT-SERVICE
+          uri: 'lb://CLIENT-SERVICE'
           predicates:
             - Path=/clients/**
         - id: particularsService
-          uri: lb://PARTICULAR-SERVICE
+          uri: 'lb://PARTICULAR-SERVICE'
           predicates:
             - Path=/particulars/**

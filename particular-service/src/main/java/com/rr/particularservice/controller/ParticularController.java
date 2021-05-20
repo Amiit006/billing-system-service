@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/particulars")
-@CrossOrigin(origins = "*")
 public class ParticularController {
 
     @Autowired

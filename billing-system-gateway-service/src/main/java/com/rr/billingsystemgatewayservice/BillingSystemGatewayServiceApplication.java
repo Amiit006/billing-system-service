@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @EnableEurekaClient
 @SpringBootApplication
-@CrossOrigin("*")
 public class BillingSystemGatewayServiceApplication {
 
 	public static void main(String[] args) {
