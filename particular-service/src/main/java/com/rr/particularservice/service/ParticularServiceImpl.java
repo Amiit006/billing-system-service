@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ParticularServiceImpl implements ParticularService {
@@ -18,7 +18,10 @@ public class ParticularServiceImpl implements ParticularService {
 
     @Override
     public List<Particular> getAllParticulars() {
-        return particularRepository.findAll();
+        return particularRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Particular::getParticularId))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -31,6 +34,22 @@ public class ParticularServiceImpl implements ParticularService {
         particular = particularRepository.save(particular);
         System.out.println(particular);
         return particular;
+    }
+
+    @Override
+    public List<Particular> createMultipleParticular(List<String> particularsList) throws ParticularException {
+        List<Particular> existingParticulars = particularRepository.findAll();
+        List<String> existingParticularsList = existingParticulars.stream()
+                .map(x -> x.getParticularName())
+                .distinct().collect(Collectors.toList());
+        List<String> difference = new ArrayList<>(particularsList);
+        difference.removeAll(existingParticularsList);
+        List<Particular> newParticularsList = new ArrayList<>();
+        difference.forEach(x -> {
+            newParticularsList.add(Particular.builder().particularName(x).build());
+        });
+        List<Particular> result = particularRepository.saveAll(newParticularsList);
+        return result;
     }
 
     @Override

@@ -9,6 +9,7 @@ public interface ParticularService {
 
     List<Particular> getAllParticulars();
     Particular createParticular(String particularName) throws ParticularException;
+    List<Particular> createMultipleParticular(List<String> particularsList) throws ParticularException;
     Particular updateParticular(int id, Particular particular) throws ParticularException;
     boolean deleteParticular();
 

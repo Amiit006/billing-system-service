@@ -32,7 +32,17 @@ public class ParticularController {
         try {
             String particularName = particular.getParticularName();
             Particular particular1 = particularService.createParticular(particularName);
-            return new ResponseEntity<>("Successfully Created: " + particularName , HttpStatus.CREATED);
+            return new ResponseEntity<Particular>(particular1 , HttpStatus.CREATED);
+        } catch (ParticularException exception) {
+            return new ResponseEntity<>(exception.getException(), exception.getStatus());
+        }
+    };
+
+    @PostMapping("/bulkCreate")
+    public ResponseEntity<?> createMultipleParticular(@RequestBody List<String> particulars) {
+        try {
+            List<Particular> result =  particularService.createMultipleParticular(particulars);
+            return new ResponseEntity<>(result , HttpStatus.CREATED);
         } catch (ParticularException exception) {
             return new ResponseEntity<>(exception.getException(), exception.getStatus());
         }
