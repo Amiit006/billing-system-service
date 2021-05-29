@@ -67,4 +67,11 @@ public class ClientServiceImpl implements ClientService {
     public boolean deleteClient(int id) {
         return false;
     }
+
+    @Override
+    public boolean isClientPresent(Client client) {
+        Client client1 = clientRepository.findByClientIdAndClientNameAndMobile(client.getClientId(),
+                client.getClientName(), client.getMobile());
+        return client1 == null ? false : true;
+    }
 }

@@ -11,4 +11,5 @@ public interface ClientService {
     Client createClient(Client client) throws ClientException;
     Client updateClient(int id, Client client) throws ClientException;
     boolean deleteClient(int id);
+    boolean isClientPresent(Client client);
 }

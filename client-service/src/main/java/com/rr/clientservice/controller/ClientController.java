@@ -62,8 +62,8 @@ public class ClientController {
         }
     }
 
-//    @PutMapping("{id}")
-//    public void deleteClient(int id) {
-//
-//    }
+    @PostMapping("/validateClient")
+    public boolean isClientPresent(@RequestBody Client client) {
+        return clientService.isClientPresent(client);
+    }
 }

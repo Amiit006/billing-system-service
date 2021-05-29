@@ -29,6 +29,10 @@ spring:
 #              - PUT
 #              - OPTIONS
       routes:
+        - id: particularsService
+          uri: 'lb://BILLING-SERVICE'
+          predicates:
+            - Path=/invoice/**
         - id: clientService
           uri: 'lb://CLIENT-SERVICE'
           predicates:
@@ -37,3 +41,4 @@ spring:
           uri: 'lb://PARTICULAR-SERVICE'
           predicates:
             - Path=/particulars/**
+
