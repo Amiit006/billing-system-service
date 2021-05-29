@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController()
 @RequestMapping("/clients")
@@ -48,7 +45,7 @@ public class ClientController {
             Client result = clientService.createClient(client);
             return new ResponseEntity<Client>(result, HttpStatus.OK);
         } catch (ClientException ex) {
-            return new ResponseEntity<String>(ex.getException(), ex.getStatus());
+            return new ResponseEntity<Map>(Collections.singletonMap("error", ex.getException()), ex.getStatus());
         }
     }
 
