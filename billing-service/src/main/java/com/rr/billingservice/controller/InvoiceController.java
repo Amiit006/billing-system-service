@@ -33,7 +33,7 @@ public class InvoiceController {
         try {
             return new ResponseEntity(invoiceService.getInvoiceById(id), HttpStatus.OK);
         } catch (InvoiceException e) {
-            return new ResponseEntity(e.getException(), e.getStatus());
+            return new ResponseEntity(Collections.singletonMap("error", e.getException()), e.getStatus());
         }
     }
 

@@ -125,6 +125,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceOverView getInvoiceById(int id) throws InvoiceException {
-        return invoiceOverviewRepository.findById(id).get();
+        return invoiceOverviewRepository.findById(id)
+                .orElseThrow(() -> new InvoiceException("Invoice not found", HttpStatus.NOT_FOUND));
     }
 }
