@@ -15,5 +15,6 @@ public class InvoiceDto {
     private float amount;
     private int quanity;
     private float total;
+    private String quantityType;
     private boolean verified;
 }

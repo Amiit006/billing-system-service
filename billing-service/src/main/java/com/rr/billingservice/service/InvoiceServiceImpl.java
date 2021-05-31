@@ -98,7 +98,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .amount(data.getAmount())
                     .quanity(data.getQuanity())
                     .total(data.getTotal())
-                    .quantityType("Pc")
+                    .quantityType(data.getQuantityType())
                     .verified(data.isVerified())
                     .invoiceId(newInvoiceOverView)
                     .createdDate(LocalDateTime.now())
