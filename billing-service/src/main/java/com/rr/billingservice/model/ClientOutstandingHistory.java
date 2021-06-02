@@ -1,0 +1,23 @@
+package com.rr.billingservice.model;
+
+import lombok.*;
+import org.hibernate.annotations.GeneratorType;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "ClientOutstandingHistory")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
+@ToString
+public class ClientOutstandingHistory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int clientId;
+    private float purchasedAmount;
+    private float paymentAmount;
+    private LocalDateTime createdDate;
+}

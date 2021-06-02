@@ -52,4 +52,14 @@ public class InvoiceController {
             return new ResponseEntity<>(ex.getException(), ex.getStatus());
         }
     }
+
+    @PutMapping(value = "/updateBill/{id}")
+    public ResponseEntity<?> updateBill(@PathVariable("id") int invoiceId, @RequestBody InvoiceDetailsDto invoiceDetailsDto) throws InvoiceException {
+        try {
+            invoiceService.updateBill(invoiceId, invoiceDetailsDto);
+            return new ResponseEntity(Collections.singletonMap("response", "Invoice saved successfully"), HttpStatus.CREATED);
+        } catch (InvoiceException ex) {
+            return new ResponseEntity<>(ex.getException(), ex.getStatus());
+        }
+    }
 }

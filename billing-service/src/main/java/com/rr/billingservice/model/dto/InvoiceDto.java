@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class InvoiceDto {
+    private int invoiceId;
     private int slNo;
     private String perticulars;
     private float amount;

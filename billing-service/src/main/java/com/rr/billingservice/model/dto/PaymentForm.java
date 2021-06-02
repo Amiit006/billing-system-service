@@ -11,9 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Builder
-public class PaymentDto {
-    private int paymentId;
-    private float paymentAmount;
-    private LocalDateTime paymentDate;
-    private String paymentMode;
+public class PaymentForm {
+    private ClientDto client;
+    private PaymentDto payment;
 }

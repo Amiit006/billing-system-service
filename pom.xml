@@ -36,7 +36,6 @@
         <module>client-service</module>
 		<module>particular-service</module>
 		<module>billing-service</module>
-		<module>payment-service</module>
 		<module>discovery-server-service</module>
 		<module>billing-system-gateway-service</module>
     </modules>
