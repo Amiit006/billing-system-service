@@ -23,6 +23,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private ClientServiceProxy clientServiceProxy;
 
+    @Autowired
+    ClientOutstandingService clientOutstandingService;
+
     @Override
     public int generatePaymentId() {
         Optional<Payment> payment = paymentRepository.findTopByOrderByPaymentIdDesc();
@@ -48,6 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
                 .clientId(clientDto.getClientId())
                 .createdDate(localDateTime).modifiedDate(localDateTime)
                 .build();
-        return paymentRepository.save(payment);
+        payment = paymentRepository.save(payment);
+        clientOutstandingService.updateCustomerOutstanding(clientDto.getClientId());
+        return payment;
     }
 }

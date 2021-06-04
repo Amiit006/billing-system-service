@@ -53,33 +53,26 @@ public class ClientOutstandingServiceImpl implements ClientOutstandingService {
                 .reduce((a,b) -> a+b)
                 .orElseThrow(() -> new InvoiceException("Error while summing total payment", HttpStatus.INTERNAL_SERVER_ERROR));
 
+        ClientOutstanding clientOutstanding;
         if(dbClientOutstanding.isPresent()) {
-            ClientOutstanding clientOutstanding = dbClientOutstanding.get();
+            clientOutstanding = dbClientOutstanding.get();
             clientOutstanding.setPurchasedAmount(invoiceTotal);
             clientOutstanding.setPaymentAmount(paymentTotal);
             clientOutstanding.setModifiedDate(LocalDateTime.now());
-            clientOutstandingRepository.save(clientOutstanding);
-            saveToClientOutstandingHistory(clientOutstanding);
-            return clientOutstanding;
         } else {
-            ClientOutstanding clientOutstanding = ClientOutstanding
+            clientOutstanding = ClientOutstanding
                     .builder()
                     .clientId(clientId)
                     .purchasedAmount(invoiceTotal).paymentAmount(paymentTotal)
                     .modifiedDate(LocalDateTime.now())
                     .build();
-            clientOutstandingRepository.save(clientOutstanding);
-            saveToClientOutstandingHistory(clientOutstanding);
-            return clientOutstanding;
         }
+        clientOutstandingRepository.save(clientOutstanding);
+        updateCustomerOutstandingHistory(clientOutstanding);
+        return clientOutstanding;
     }
 
-    public void saveToClientOutstandingHistory(ClientOutstanding clientOutstanding) {
-
-    }
-
-    @Override
-    public boolean updateCustomerOutstandingHistory(ClientOutstandingHistory clientOutstanding) {
+    private boolean updateCustomerOutstandingHistory(ClientOutstanding clientOutstanding) {
         ClientOutstandingHistory history = ClientOutstandingHistory
                 .builder()
                 .clientId(clientOutstanding.getClientId())

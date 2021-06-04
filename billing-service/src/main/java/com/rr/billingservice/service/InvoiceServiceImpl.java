@@ -69,7 +69,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         buildInvoiceDetails(invoice, invoiceDetails, newInvoiceOverView, createdDate, modifiedDate);
 
         invoiceDetailsRepository.saveAll(invoiceDetails);
-
+        clientOutstandingService.updateCustomerOutstanding(client.getClientId());
         return result;
     }
 
@@ -104,7 +104,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         buildInvoiceDetails(invoice, invoiceDetails, newInvoiceOverView, createdDate, modifiedDate);
 
         invoiceDetailsRepository.saveAll(invoiceDetails);
-
+        clientOutstandingService.updateCustomerOutstanding(client.getClientId());
         return result;
     }
 

@@ -15,7 +15,6 @@ import java.util.Collections;
 @RequestMapping("/invoice")
 public class InvoiceController {
 
-
     @Autowired
     InvoiceService invoiceService;
 

@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @ToString
 public class ClientOutstandingHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int clientId;
     private float purchasedAmount;
     private float paymentAmount;
