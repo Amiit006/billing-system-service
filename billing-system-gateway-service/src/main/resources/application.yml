@@ -32,7 +32,7 @@ spring:
         - id: particularsService
           uri: 'lb://BILLING-SERVICE'
           predicates:
-            - Path=/invoice/**, /payment/**
+            - Path=/invoice/**, /payment/**, /client-outstanding/**
         - id: clientService
           uri: 'lb://CLIENT-SERVICE'
           predicates:
