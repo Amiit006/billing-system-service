@@ -34,7 +34,7 @@ public class Payment {
     @Column(name = "ModifiedDate")
     private LocalDateTime modifiedDate;
 
-    @OneToOne(mappedBy = "paymentId")
+    @OneToOne(mappedBy = "payment")
     @JsonBackReference
     private InvoiceOverView invoiceOverView;
 }

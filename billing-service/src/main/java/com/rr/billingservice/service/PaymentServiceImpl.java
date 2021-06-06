@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +55,11 @@ public class PaymentServiceImpl implements PaymentService {
         payment = paymentRepository.save(payment);
         clientOutstandingService.updateCustomerOutstanding(clientDto.getClientId());
         return payment;
+    }
+
+    @Override
+    public List<Payment> getPaymentByClientId(int clientId) throws InvoiceException {
+        clientServiceProxy.isClientPresentByClientId(clientId);
+        return paymentRepository.findByClientId(clientId);
     }
 }

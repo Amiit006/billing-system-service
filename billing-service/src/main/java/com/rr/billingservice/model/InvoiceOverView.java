@@ -1,5 +1,6 @@
 package com.rr.billingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Builder
+@JsonIgnoreProperties(value = { "invoiceDetails"})
 public class InvoiceOverView {
     @Id
     @Column(name="InvoiceId")
@@ -28,7 +30,7 @@ public class InvoiceOverView {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "paymentId")
     @JsonManagedReference
-    private Payment paymentId;
+    private Payment payment;
 
     @Column(name="InvoiceDate")
     private LocalDate invoiceDate;

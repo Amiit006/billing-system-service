@@ -27,6 +27,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client getClientById(int clientId) throws ClientException {
+        Optional<Client> result = clientRepository.findById(clientId);
+        return result.orElseThrow(() -> new ClientException("Client Not Present", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public Client createClient(Client client) throws ClientException {
         Optional<List<Client>> results = clientRepository.findByClientName(client.getClientName());
         if(results.isPresent()) {
@@ -73,5 +79,12 @@ public class ClientServiceImpl implements ClientService {
         Client client1 = clientRepository.findByClientIdAndClientNameAndMobile(client.getClientId(),
                 client.getClientName(), client.getMobile());
         return client1 == null ? false : true;
+    }
+
+    @Override
+    public boolean isClientPresentByClientId(int clientId) throws ClientException {
+        Client c = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientException("Client Not Present", HttpStatus.NOT_FOUND));
+        return true;
     }
 }

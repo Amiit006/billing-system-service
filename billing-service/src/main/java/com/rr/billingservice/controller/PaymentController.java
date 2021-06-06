@@ -37,4 +37,13 @@ public class PaymentController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> getPaymentByClientId(@RequestParam("clientId") int clientId) {
+        try {
+            return new ResponseEntity(paymentService.getPaymentByClientId(clientId), HttpStatus.OK);
+        } catch (InvoiceException ex) {
+            return new ResponseEntity(Collections.singletonMap("error", "Error occurred"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

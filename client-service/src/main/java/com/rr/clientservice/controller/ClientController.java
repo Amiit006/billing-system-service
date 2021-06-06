@@ -59,8 +59,28 @@ public class ClientController {
         }
     }
 
+    @GetMapping("/client")
+    public ResponseEntity<?> getClientById(@RequestParam("clientId") int clientId) {
+        try {
+            Client result = clientService.getClientById(clientId);
+            return new ResponseEntity<Client>(result, HttpStatus.OK);
+        } catch (ClientException ex) {
+            return new ResponseEntity<String>(ex.getException(), ex.getStatus());
+        }
+    }
+
     @PostMapping("/validateClient")
     public boolean isClientPresent(@RequestBody Client client) {
         return clientService.isClientPresent(client);
+    }
+
+    @GetMapping("/validateClient")
+    public ResponseEntity<?> isClientPresentByClientId(@RequestParam("clientId") int clientId) throws ClientException {
+        try {
+            return new ResponseEntity<>(clientService.isClientPresentByClientId(clientId), HttpStatus.OK) ;
+        } catch (ClientException ex) {
+            return new ResponseEntity<>(Collections.singletonMap("error", ex.getException()), HttpStatus.NOT_FOUND);
+        }
+
     }
 }

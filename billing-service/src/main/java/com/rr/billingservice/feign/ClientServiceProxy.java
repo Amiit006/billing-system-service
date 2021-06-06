@@ -11,6 +11,9 @@ public interface ClientServiceProxy {
     @RequestMapping(method= RequestMethod.GET, value = "/clients")
     List<ClientDto> getAllClient();
 
+    @RequestMapping(method= RequestMethod.GET, value = "/clients/validateClient")
+    boolean isClientPresentByClientId(@RequestParam("clientId") int clientId);
+
     @PostMapping(value = "/clients/validateClient")
     boolean isClientPresent(@RequestBody ClientDto client);
 

@@ -1,6 +1,7 @@
 package com.rr.billingservice.controller;
 
 import com.rr.billingservice.exception.InvoiceException;
+import com.rr.billingservice.model.InvoiceOverView;
 import com.rr.billingservice.model.dto.InvoiceDetailsDto;
 import com.rr.billingservice.repository.InvoiceOverviewRepository;
 import com.rr.billingservice.service.InvoiceService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/invoice")
@@ -30,16 +32,17 @@ public class InvoiceController {
     @GetMapping("{id}")
     public ResponseEntity<?> getInvoiceById(@PathVariable("id") int id) {
         try {
-            return new ResponseEntity(invoiceService.getInvoiceById(id), HttpStatus.OK);
+            InvoiceOverView invoiceOverView = invoiceService.getInvoiceById(id);
+            return new ResponseEntity(invoiceOverView, HttpStatus.OK);
         } catch (InvoiceException e) {
             return new ResponseEntity(Collections.singletonMap("error", e.getException()), e.getStatus());
         }
     }
 
-    @PostMapping("/createQuotation")
-    public ResponseEntity<?> createQuotation() {
-
-        return new ResponseEntity(HttpStatus.CREATED);
+    @GetMapping("/client")
+    public ResponseEntity<?> getInvoiceByClientId(@RequestParam("clientId") int id) {
+        List<InvoiceOverView> invoices = invoiceService.getInvoiceByClientId(id);
+        return new ResponseEntity(invoices, HttpStatus.OK);
     }
 
     @PostMapping(value = "/createBill")

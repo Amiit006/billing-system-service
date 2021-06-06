@@ -9,7 +9,6 @@ import com.rr.billingservice.model.Payment;
 import com.rr.billingservice.model.dto.*;
 import com.rr.billingservice.repository.InvoiceDetailsRepository;
 import com.rr.billingservice.repository.InvoiceOverviewRepository;
-import com.rr.billingservice.repository.InvoiceRepository;
 import com.rr.billingservice.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +22,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
-
-    @Autowired
-    private InvoiceRepository invoiceRepository;
 
     @Autowired
     private PaymentRepository paymentRepository;
@@ -132,7 +128,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             , LocalDateTime createdDate, LocalDateTime modifiedDate) {
         return InvoiceOverView.builder()
                 .clientId(client.getClientId())
-                .paymentId(paymentToSave)
+                .payment(paymentToSave)
                 .invoiceDate(payment.getPaymentDate().toLocalDate())
                 .subTotalAmount(billAmountDetails.getSubTotalAmount())
                 .taxAmount(billAmountDetails.getTaxAmount())
@@ -194,5 +190,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceOverView getInvoiceById(int id) throws InvoiceException {
         return invoiceOverviewRepository.findById(id)
                 .orElseThrow(() -> new InvoiceException("Invoice not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public List<InvoiceOverView> getInvoiceByClientId(int clientId){
+        clientServiceProxy.isClientPresentByClientId(clientId);
+        return invoiceOverviewRepository.findByClientId(clientId);
     }
 }
