@@ -21,4 +21,7 @@ public class Particular {
     @Column(name = "ParticularName")
     private String particularName;
 
+    @Column(name = "DiscountPercentage")
+    private int discountPercentage;
+
 }

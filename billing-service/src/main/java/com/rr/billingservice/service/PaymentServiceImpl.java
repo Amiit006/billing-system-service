@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -60,6 +61,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<Payment> getPaymentByClientId(int clientId) throws InvoiceException {
         clientServiceProxy.isClientPresentByClientId(clientId);
-        return paymentRepository.findByClientId(clientId);
+        List<Payment> payments = paymentRepository.findByClientId(clientId);
+        payments = payments.stream().filter(data -> (int)data.getAmount() != 0.0).collect(Collectors.toList());
+        return payments;
     }
 }

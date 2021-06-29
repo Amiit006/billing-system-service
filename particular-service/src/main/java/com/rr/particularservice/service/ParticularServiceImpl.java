@@ -25,14 +25,13 @@ public class ParticularServiceImpl implements ParticularService {
     }
 
     @Override
-    public Particular createParticular(String particularName) throws ParticularException {
+    public Particular createParticular(String particularName, int discountPercentage) throws ParticularException {
         Optional<Particular> result = particularRepository.findByParticularName(particularName);
         if(result.isPresent()) {
             throw new ParticularException("Particular already present: " + particularName, HttpStatus.FOUND);
         }
-        Particular particular = Particular.builder().particularName(particularName).build();
+        Particular particular = Particular.builder().particularName(particularName).discountPercentage(discountPercentage).build();
         particular = particularRepository.save(particular);
-        System.out.println(particular);
         return particular;
     }
 

@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Builder
-@JsonIgnoreProperties(value = { "invoiceDetails"})
 public class InvoiceOverView {
     @Id
     @Column(name="InvoiceId")

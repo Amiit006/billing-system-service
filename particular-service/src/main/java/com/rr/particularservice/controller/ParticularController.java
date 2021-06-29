@@ -31,7 +31,8 @@ public class ParticularController {
     public ResponseEntity<?> createSingleParticular(@RequestBody Particular particular) {
         try {
             String particularName = particular.getParticularName();
-            Particular particular1 = particularService.createParticular(particularName);
+            int discountPercentage = particular.getDiscountPercentage();
+            Particular particular1 = particularService.createParticular(particularName, discountPercentage);
             return new ResponseEntity<Particular>(particular1 , HttpStatus.CREATED);
         } catch (ParticularException exception) {
             return new ResponseEntity<>(exception.getException(), exception.getStatus());
