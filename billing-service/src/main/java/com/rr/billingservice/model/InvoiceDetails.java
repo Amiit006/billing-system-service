@@ -28,8 +28,12 @@ public class InvoiceDetails {
     private float amount;
     @Column(name = "Quanity")
     private int quanity;
+    @Column(name = "DiscountPercentage")
+    private float discountPercentage;
     @Column(name = "Total")
     private float total;
+    @Column(name = "DiscountTotal")
+    private float discountTotal;
     @Column(name = "QuantityType")
     private String quantityType;
     @Column(name = "Verified")

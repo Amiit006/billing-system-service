@@ -51,7 +51,7 @@ public class InvoiceController {
             invoiceService.createBill(invoiceDetailsDto);
             return new ResponseEntity(Collections.singletonMap("response", "Invoice saved successfully"), HttpStatus.CREATED);
         } catch (InvoiceException ex) {
-            return new ResponseEntity<>(ex.getException(), ex.getStatus());
+            return new ResponseEntity<>(Collections.singletonMap("error", ex.getException()), ex.getStatus());
         }
     }
 

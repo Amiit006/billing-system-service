@@ -1,4 +1,4 @@
-package com.rr.billingservice.model.dto;
+package com.rr.particularservice.model;
 
 import lombok.*;
 
@@ -9,7 +9,6 @@ import lombok.*;
 @ToString
 public class ParticularDto {
 
-    private int particularId;
     private String particularName;
     private float discountPercentage;
 }

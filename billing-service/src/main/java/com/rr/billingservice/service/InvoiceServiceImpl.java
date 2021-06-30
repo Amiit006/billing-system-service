@@ -113,7 +113,9 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .perticulars(data.getPerticulars())
                     .amount(data.getAmount())
                     .quanity(data.getQuanity())
+                    .discountPercentage(data.getDiscount())
                     .total(data.getTotal())
+                    .discountTotal(data.getDiscountPrice())
                     .quantityType(data.getQuantityType())
                     .verified(data.isVerified())
                     .invoiceId(newInvoiceOverView)
@@ -158,16 +160,18 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         for (InvoiceDto data : invoice) {
-            subTotalAmount += data.getAmount() * data.getQuanity();
+            subTotalAmount = (data.getAmount() * data.getQuanity())
+                    - (data.getAmount() * data.getQuanity() * data.getDiscount() / 100);
+//            subTotalAmount += data.getAmount() * data.getQuanity();
         }
         taxAmount = subTotalAmount * 5 / 100;
         grandTotalAmount = subTotalAmount + taxAmount;
 
         if (subTotalAmount != billAmountDetails.getSubTotalAmount())
             throw new InvoiceException("Subtotal mismatch!", HttpStatus.BAD_REQUEST);
-        if (taxAmount != billAmountDetails.getTaxAmount())
+        if (Math.round(taxAmount * 100.0) / 100.0 != Math.round(billAmountDetails.getTaxAmount() * 100.0) / 100.0 )
             throw new InvoiceException("Tax amount mismatch!", HttpStatus.BAD_REQUEST);
-        if (grandTotalAmount != billAmountDetails.getGrandTotalAmount())
+        if (Math.round(grandTotalAmount * 100.0) / 100.0 != Math.round(billAmountDetails.getGrandTotalAmount() * 100.0) / 100.0)
             throw new InvoiceException("Grand total mismatch!", HttpStatus.BAD_REQUEST);
         boolean billNotVerified = invoice.stream().map(InvoiceDto::isVerified).distinct().filter(data -> data.equals(Boolean.FALSE)).findAny().isPresent();
         if (billNotVerified)
@@ -176,7 +180,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     private void createParticulars(List<InvoiceDto> invoice) {
-        List<String> particulars = invoice.stream().map(InvoiceDto::getPerticulars).collect(Collectors.toList());
+        List<ParticularDto> particulars = invoice.stream().map(x -> ParticularDto.builder().particularName(x.getPerticulars())
+                                                                    .discountPercentage(x.getDiscount()).build()).collect(Collectors.toList());
         particularServiceProxy.createMultipleParticular(particulars);
     }
 

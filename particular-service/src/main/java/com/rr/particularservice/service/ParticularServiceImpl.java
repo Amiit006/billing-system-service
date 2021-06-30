@@ -2,6 +2,7 @@ package com.rr.particularservice.service;
 
 import com.rr.particularservice.exception.ParticularException;
 import com.rr.particularservice.model.Particular;
+import com.rr.particularservice.model.ParticularDto;
 import com.rr.particularservice.repository.ParticularRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class ParticularServiceImpl implements ParticularService {
     }
 
     @Override
-    public Particular createParticular(String particularName, int discountPercentage) throws ParticularException {
+    public Particular createParticular(String particularName, float discountPercentage) throws ParticularException {
         Optional<Particular> result = particularRepository.findByParticularName(particularName);
         if(result.isPresent()) {
             throw new ParticularException("Particular already present: " + particularName, HttpStatus.FOUND);
@@ -36,16 +37,27 @@ public class ParticularServiceImpl implements ParticularService {
     }
 
     @Override
-    public List<Particular> createMultipleParticular(List<String> particularsList) throws ParticularException {
+    public List<Particular> createMultipleParticular(List<ParticularDto> particularsList) throws ParticularException {
         List<Particular> existingParticulars = particularRepository.findAll();
         List<String> existingParticularsList = existingParticulars.stream()
                 .map(x -> x.getParticularName())
                 .distinct().collect(Collectors.toList());
-        List<String> difference = new ArrayList<>(particularsList);
+        List<String> difference = new ArrayList<>(particularsList.stream()
+                .map(ParticularDto::getParticularName).collect(Collectors.toList()));
         difference.removeAll(existingParticularsList);
         List<Particular> newParticularsList = new ArrayList<>();
         difference.forEach(x -> {
-            newParticularsList.add(Particular.builder().particularName(x).build());
+            newParticularsList.add(Particular
+                    .builder()
+                    .particularName(x)
+                    .discountPercentage(particularsList
+                            .stream()
+                            .filter(r ->
+                                    r.getParticularName().equalsIgnoreCase(x))
+                            .findFirst()
+                            .get()
+                            .getDiscountPercentage())
+                    .build());
         });
         List<Particular> result = particularRepository.saveAll(newParticularsList);
         return result;

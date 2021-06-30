@@ -11,6 +11,6 @@ import java.util.List;
 public interface ParticularServiceProxy {
 
     @PostMapping(value = "/particulars/bulkCreate")
-    List<ParticularDto> createMultipleParticular(@RequestBody List<String> particular);
+    List<ParticularDto> createMultipleParticular(@RequestBody List<ParticularDto> particular);
 
 }

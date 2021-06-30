@@ -2,6 +2,7 @@ package com.rr.particularservice.controller;
 
 import com.rr.particularservice.exception.ParticularException;
 import com.rr.particularservice.model.Particular;
+import com.rr.particularservice.model.ParticularDto;
 import com.rr.particularservice.service.ParticularService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ParticularController {
     public ResponseEntity<?> createSingleParticular(@RequestBody Particular particular) {
         try {
             String particularName = particular.getParticularName();
-            int discountPercentage = particular.getDiscountPercentage();
+            float discountPercentage = particular.getDiscountPercentage();
             Particular particular1 = particularService.createParticular(particularName, discountPercentage);
             return new ResponseEntity<Particular>(particular1 , HttpStatus.CREATED);
         } catch (ParticularException exception) {
@@ -40,7 +41,7 @@ public class ParticularController {
     };
 
     @PostMapping("/bulkCreate")
-    public ResponseEntity<?> createMultipleParticular(@RequestBody List<String> particulars) {
+    public ResponseEntity<?> createMultipleParticular(@RequestBody List<ParticularDto> particulars) {
         try {
             List<Particular> result =  particularService.createMultipleParticular(particulars);
             return new ResponseEntity<>(result , HttpStatus.CREATED);
