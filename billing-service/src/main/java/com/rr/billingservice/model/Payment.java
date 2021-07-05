@@ -24,7 +24,7 @@ public class Payment {
     @Column(name = "ClientId")
     private int clientId;
     @Column(name = "Amount")
-    private float amount;
+    private double amount;
     @Column(name = "PaymentMode")
     private String paymentMode;
     @Column(name = "PaymentDate")

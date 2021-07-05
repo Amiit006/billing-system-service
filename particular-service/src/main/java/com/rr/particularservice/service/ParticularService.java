@@ -9,7 +9,7 @@ import java.util.List;
 public interface ParticularService {
 
     List<Particular> getAllParticulars();
-    Particular createParticular(String particularName, float discountPercentage) throws ParticularException;
+    Particular createParticular(String particularName, double discountPercentage) throws ParticularException;
     List<Particular> createMultipleParticular(List<ParticularDto> particularsList) throws ParticularException;
     Particular updateParticular(int id, Particular particular) throws ParticularException;
     boolean deleteParticular();

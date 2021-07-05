@@ -22,6 +22,6 @@ public class Particular {
     private String particularName;
 
     @Column(name = "DiscountPercentage")
-    private float discountPercentage;
+    private double discountPercentage;
 
 }

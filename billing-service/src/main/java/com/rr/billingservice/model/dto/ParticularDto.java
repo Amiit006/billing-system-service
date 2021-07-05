@@ -11,5 +11,5 @@ public class ParticularDto {
 
     private int particularId;
     private String particularName;
-    private float discountPercentage;
+    private double discountPercentage;
 }

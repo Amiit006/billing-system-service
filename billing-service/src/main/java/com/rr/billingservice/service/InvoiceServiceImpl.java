@@ -10,10 +10,13 @@ import com.rr.billingservice.model.dto.*;
 import com.rr.billingservice.repository.InvoiceDetailsRepository;
 import com.rr.billingservice.repository.InvoiceOverviewRepository;
 import com.rr.billingservice.repository.PaymentRepository;
+import io.micrometer.core.instrument.util.DoubleFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,7 +155,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     private boolean validateInputData(List<InvoiceDto> invoice, BillAmountDetailsDto billAmountDetails, ClientDto client) throws InvoiceException {
-        float grandTotalAmount = 0, subTotalAmount = 0, taxAmount = 0;
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
+
+        double grandTotalAmount = 0, subTotalAmount = 0, taxAmount = 0;
 
         boolean result = clientServiceProxy.isClientPresent(client);
         if (!result) {
@@ -160,12 +166,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         for (InvoiceDto data : invoice) {
-            subTotalAmount = (data.getAmount() * data.getQuanity())
-                    - (data.getAmount() * data.getQuanity() * data.getDiscount() / 100);
-//            subTotalAmount += data.getAmount() * data.getQuanity();
+            subTotalAmount = subTotalAmount + ((data.getAmount() * data.getQuanity())
+                    - (data.getAmount() * data.getQuanity() * data.getDiscount() / 100));
         }
-        taxAmount = subTotalAmount * 5 / 100;
-        grandTotalAmount = subTotalAmount + taxAmount;
+
+        double overallDiscountPercentage = billAmountDetails.getOverallDiscountPercentage();
+        double overallDiscountAmount = subTotalAmount * overallDiscountPercentage / 100;
+
+        taxAmount = (subTotalAmount - overallDiscountAmount) * billAmountDetails.getTaxPercentage() / 100;
+        grandTotalAmount = subTotalAmount - overallDiscountAmount + taxAmount;
 
         if (subTotalAmount != billAmountDetails.getSubTotalAmount())
             throw new InvoiceException("Subtotal mismatch!", HttpStatus.BAD_REQUEST);

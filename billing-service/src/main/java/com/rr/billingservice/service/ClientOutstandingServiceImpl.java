@@ -40,7 +40,7 @@ public class ClientOutstandingServiceImpl implements ClientOutstandingService {
         List<InvoiceOverView> clientInvoices = invoiceOverviewRepository.findByClientId(clientId);
         List<Payment> clientPayments = paymentRepository.findByClientId(clientId);
         Optional<ClientOutstanding> dbClientOutstanding = clientOutstandingRepository.findById(clientId);
-        float invoiceTotal, paymentTotal;
+        double invoiceTotal, paymentTotal;
         invoiceTotal = clientInvoices
                 .stream()
                 .map(InvoiceOverView::getGrandTotalAmount)
@@ -73,10 +73,10 @@ public class ClientOutstandingServiceImpl implements ClientOutstandingService {
     }
 
     @Override
-    public float getClientOutStandingByClientId(int clientId) throws InvoiceException {
+    public double getClientOutStandingByClientId(int clientId) throws InvoiceException {
         ClientOutstanding clientOutstanding = clientOutstandingRepository.findById(clientId)
                 .orElseThrow(() -> new InvoiceException("Client Outstanding not found!", HttpStatus.NOT_FOUND));
-        return Float.valueOf(String.format("%.2f", clientOutstanding.getPurchasedAmount()-clientOutstanding.getPaymentAmount()));
+        return Double.valueOf(String.format("%.2d", clientOutstanding.getPurchasedAmount()-clientOutstanding.getPaymentAmount()));
     }
 
     private boolean updateCustomerOutstandingHistory(ClientOutstanding clientOutstanding) {

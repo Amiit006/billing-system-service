@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class BillAmountDetailsDto {
-    private float grandTotalAmount;
-    private float subTotalAmount;
-    private float taxAmount;
-    private float taxPercentage;
+    private double grandTotalAmount;
+    private double subTotalAmount;
+    private double taxAmount;
+    private double taxPercentage;
+    private double overallDiscountPercentage;
+    private double overallDiscountAmount;
 }

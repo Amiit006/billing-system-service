@@ -13,11 +13,11 @@ public class InvoiceDto {
     private int invoiceId;
     private int slNo;
     private String perticulars;
-    private float amount;
-    private float discount;
-    private float discountPrice;
+    private double amount;
+    private double discount;
+    private double discountPrice;
     private int quanity;
-    private float total;
+    private double total;
     private String quantityType;
     private boolean verified;
 }

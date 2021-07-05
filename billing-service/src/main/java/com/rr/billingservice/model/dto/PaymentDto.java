@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class PaymentDto {
     private int paymentId;
-    private float paymentAmount;
+    private double paymentAmount;
     private LocalDateTime paymentDate;
     private String paymentMode;
 }

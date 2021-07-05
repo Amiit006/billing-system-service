@@ -25,15 +25,15 @@ public class InvoiceDetails {
     @Column(name = "Perticulars")
     private String perticulars;
     @Column(name = "Amount")
-    private float amount;
+    private double amount;
     @Column(name = "Quanity")
     private int quanity;
     @Column(name = "DiscountPercentage")
-    private float discountPercentage;
+    private double discountPercentage;
     @Column(name = "Total")
-    private float total;
+    private double total;
     @Column(name = "DiscountTotal")
-    private float discountTotal;
+    private double discountTotal;
     @Column(name = "QuantityType")
     private String quantityType;
     @Column(name = "Verified")

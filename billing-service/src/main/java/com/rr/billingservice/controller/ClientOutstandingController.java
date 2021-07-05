@@ -22,7 +22,7 @@ public class ClientOutstandingController {
     @GetMapping
     public ResponseEntity<?> getOutstandingById(@RequestParam("clientId") int id) {
         try {
-            float outstanding = clientOutstandingService.getClientOutStandingByClientId(id);
+            double outstanding = clientOutstandingService.getClientOutStandingByClientId(id);
             return new ResponseEntity(outstanding, HttpStatus.OK);
         } catch (InvoiceException ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error Occurred"), HttpStatus.INTERNAL_SERVER_ERROR);

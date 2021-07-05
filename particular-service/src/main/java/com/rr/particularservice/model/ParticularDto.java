@@ -10,5 +10,5 @@ import lombok.*;
 public class ParticularDto {
 
     private String particularName;
-    private float discountPercentage;
+    private double discountPercentage;
 }

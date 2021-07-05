@@ -26,7 +26,7 @@ public class ParticularServiceImpl implements ParticularService {
     }
 
     @Override
-    public Particular createParticular(String particularName, float discountPercentage) throws ParticularException {
+    public Particular createParticular(String particularName, double discountPercentage) throws ParticularException {
         Optional<Particular> result = particularRepository.findByParticularName(particularName);
         if(result.isPresent()) {
             throw new ParticularException("Particular already present: " + particularName, HttpStatus.FOUND);

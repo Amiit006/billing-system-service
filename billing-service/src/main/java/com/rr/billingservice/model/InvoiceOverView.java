@@ -34,13 +34,13 @@ public class InvoiceOverView {
     @Column(name="InvoiceDate")
     private LocalDate invoiceDate;
     @Column(name="SubTotalAmount")
-    private float subTotalAmount;
+    private double subTotalAmount;
     @Column(name="TaxAmount")
-    private float taxAmount;
+    private double taxAmount;
     @Column(name="GrandTotalAmount")
-    private float grandTotalAmount;
+    private double grandTotalAmount;
     @Column(name="TaxPercentage")
-    private float taxPercentage;
+    private double taxPercentage;
     @Column(name="CreatedDate")
     private LocalDateTime createdDate;
     @Column(name="ModifiedDate")

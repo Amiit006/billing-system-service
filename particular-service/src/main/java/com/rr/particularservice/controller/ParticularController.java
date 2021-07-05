@@ -32,7 +32,7 @@ public class ParticularController {
     public ResponseEntity<?> createSingleParticular(@RequestBody Particular particular) {
         try {
             String particularName = particular.getParticularName();
-            float discountPercentage = particular.getDiscountPercentage();
+            double discountPercentage = particular.getDiscountPercentage();
             Particular particular1 = particularService.createParticular(particularName, discountPercentage);
             return new ResponseEntity<Particular>(particular1 , HttpStatus.CREATED);
         } catch (ParticularException exception) {

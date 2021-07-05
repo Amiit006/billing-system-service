@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class ClientOutstanding {
     @Id
     private int clientId;
-    private float purchasedAmount;
-    private float paymentAmount;
+    private double purchasedAmount;
+    private double paymentAmount;
     private LocalDateTime modifiedDate;
 }

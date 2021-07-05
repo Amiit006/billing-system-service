@@ -8,5 +8,5 @@ public interface ClientOutstandingService {
 
     ClientOutstanding updateCustomerOutstanding(int clientId) throws InvoiceException;
 
-    float getClientOutStandingByClientId(int clientId) throws InvoiceException;
+    double getClientOutStandingByClientId(int clientId) throws InvoiceException;
 }
