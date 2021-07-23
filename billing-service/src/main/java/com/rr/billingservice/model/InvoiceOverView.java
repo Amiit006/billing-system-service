@@ -1,6 +1,5 @@
 package com.rr.billingservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,12 +34,16 @@ public class InvoiceOverView {
     private LocalDate invoiceDate;
     @Column(name="SubTotalAmount")
     private double subTotalAmount;
-    @Column(name="TaxAmount")
-    private double taxAmount;
-    @Column(name="GrandTotalAmount")
-    private double grandTotalAmount;
     @Column(name="TaxPercentage")
     private double taxPercentage;
+    @Column(name="TaxAmount")
+    private double taxAmount;
+    @Column(name="DiscountPercentage")
+    private double discountPercentage;
+    @Column(name="DiscountAmount")
+    private double discountAmount;
+    @Column(name="GrandTotalAmount")
+    private double grandTotalAmount;
     @Column(name="CreatedDate")
     private LocalDateTime createdDate;
     @Column(name="ModifiedDate")

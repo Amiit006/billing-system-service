@@ -2,6 +2,7 @@ package com.rr.billingservice.controller;
 
 import com.rr.billingservice.exception.InvoiceException;
 import com.rr.billingservice.model.InvoiceOverView;
+import com.rr.billingservice.model.dto.BillAmountDetailsDto;
 import com.rr.billingservice.model.dto.InvoiceDetailsDto;
 import com.rr.billingservice.repository.InvoiceOverviewRepository;
 import com.rr.billingservice.service.InvoiceService;
@@ -62,6 +63,16 @@ public class InvoiceController {
             return new ResponseEntity(Collections.singletonMap("response", "Invoice saved successfully"), HttpStatus.CREATED);
         } catch (InvoiceException ex) {
             return new ResponseEntity<>(ex.getException(), ex.getStatus());
+        }
+    }
+
+    @PutMapping(value = "/addDiscount/{clientId}/{invoiceId}")
+    public ResponseEntity<?> addDiscountToBill(@PathVariable("clientId") int clientId, @PathVariable("invoiceId") int invoiceId, @RequestBody BillAmountDetailsDto billAmountDetails) throws InvoiceException {
+        try {
+            invoiceService.addDiscountToBill(invoiceId, clientId, billAmountDetails);
+            return new ResponseEntity(Collections.singletonMap("response", "Invoice saved successfully"), HttpStatus.CREATED);
+        } catch (InvoiceException ex) {
+            return new ResponseEntity<>(Collections.singletonMap("error",ex.getException()), ex.getStatus());
         }
     }
 }

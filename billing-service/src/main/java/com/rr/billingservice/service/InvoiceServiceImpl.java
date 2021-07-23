@@ -138,9 +138,11 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .subTotalAmount(billAmountDetails.getSubTotalAmount())
                 .taxAmount(billAmountDetails.getTaxAmount())
                 .taxPercentage(billAmountDetails.getTaxPercentage())
+                .discountPercentage(billAmountDetails.getOverallDiscountPercentage())
+                .discountAmount(billAmountDetails.getOverallDiscountAmount())
                 .grandTotalAmount(billAmountDetails.getGrandTotalAmount())
-                .createdDate(LocalDateTime.now())
-                .modifiedDate(LocalDateTime.now());
+                .createdDate(createdDate)
+                .modifiedDate(modifiedDate);
     }
 
     private Payment.PaymentBuilder buildPayment(ClientDto client, PaymentDto payment
@@ -150,8 +152,8 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .amount(payment.getPaymentAmount())
                 .paymentMode(payment.getPaymentMode())
                 .paymentDate(payment.getPaymentDate().toLocalDate())
-                .createdDate(LocalDateTime.now())
-                .modifiedDate(LocalDateTime.now());
+                .createdDate(createdDate)
+                .modifiedDate(modifiedDate);
     }
 
     private boolean validateInputData(List<InvoiceDto> invoice, BillAmountDetailsDto billAmountDetails, ClientDto client) throws InvoiceException {
@@ -210,5 +212,42 @@ public class InvoiceServiceImpl implements InvoiceService {
     public List<InvoiceOverView> getInvoiceByClientId(int clientId){
         clientServiceProxy.isClientPresentByClientId(clientId);
         return invoiceOverviewRepository.findByClientId(clientId);
+    }
+
+    @Override
+    public InvoiceOverView addDiscountToBill(int invoiceId, int clientId, BillAmountDetailsDto billAmountDetailsDto) throws InvoiceException {
+        InvoiceOverView invoiceOverView = invoiceOverviewRepository.findById(invoiceId).orElseThrow(() -> new InvoiceException("Invoice not found", HttpStatus.NOT_FOUND));
+        if(invoiceOverView.getSubTotalAmount() != billAmountDetailsDto.getSubTotalAmount())
+            throw new InvoiceException("Subtotal mismatch!", HttpStatus.BAD_REQUEST);
+        double grandTotalAmount = invoiceOverView.getGrandTotalAmount(),
+                subTotalAmount = invoiceOverView.getSubTotalAmount(), taxAmount = 0;
+
+        boolean result = clientServiceProxy.isClientPresentByClientId(clientId);
+        if (!result) {
+            throw new InvoiceException("Client not found!", HttpStatus.NOT_FOUND);
+        }
+
+        double overallDiscountPercentage = billAmountDetailsDto.getOverallDiscountPercentage();
+        double overallDiscountAmount = subTotalAmount * overallDiscountPercentage / 100;
+
+        taxAmount = (subTotalAmount - overallDiscountAmount) * billAmountDetailsDto.getTaxPercentage() / 100;
+        grandTotalAmount = subTotalAmount - overallDiscountAmount + taxAmount;
+        if (Math.round(grandTotalAmount * 100.0) / 100.0 != Math.round(billAmountDetailsDto.getGrandTotalAmount() * 100.0) / 100.0)
+            throw new InvoiceException("Grand total mismatch!", HttpStatus.BAD_REQUEST);
+        InvoiceOverView updatedInvoiceOverView =
+                InvoiceOverView.builder()
+                        .invoiceId(invoiceOverView.getInvoiceId())
+                        .clientId(clientId)
+                        .payment(invoiceOverView.getPayment())
+                        .invoiceDate(invoiceOverView.getInvoiceDate())
+                        .subTotalAmount(invoiceOverView.getSubTotalAmount())
+                        .taxAmount(billAmountDetailsDto.getTaxAmount())
+                        .taxPercentage(billAmountDetailsDto.getTaxPercentage())
+                        .discountPercentage(billAmountDetailsDto.getOverallDiscountPercentage())
+                        .discountAmount(billAmountDetailsDto.getOverallDiscountAmount())
+                        .grandTotalAmount(grandTotalAmount)
+                        .createdDate(invoiceOverView.getCreatedDate())
+                        .modifiedDate(LocalDateTime.now()).build();
+        return invoiceOverviewRepository.save(updatedInvoiceOverView);
     }
 }
