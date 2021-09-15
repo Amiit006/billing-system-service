@@ -43,7 +43,7 @@ public class ParticularServiceImpl implements ParticularService {
                 .map(x -> x.getParticularName())
                 .distinct().collect(Collectors.toList());
         List<String> difference = new ArrayList<>(particularsList.stream()
-                .map(ParticularDto::getParticularName).collect(Collectors.toList()));
+                .map(ParticularDto::getParticularName).distinct().collect(Collectors.toList()));
         difference.removeAll(existingParticularsList);
         List<Particular> newParticularsList = new ArrayList<>();
         difference.forEach(x -> {

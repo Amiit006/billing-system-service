@@ -76,7 +76,7 @@ public class ClientOutstandingServiceImpl implements ClientOutstandingService {
     public double getClientOutStandingByClientId(int clientId) throws InvoiceException {
         ClientOutstanding clientOutstanding = clientOutstandingRepository.findById(clientId)
                 .orElseThrow(() -> new InvoiceException("Client Outstanding not found!", HttpStatus.NOT_FOUND));
-        return Double.valueOf(String.format("%.2d", clientOutstanding.getPurchasedAmount()-clientOutstanding.getPaymentAmount()));
+        return clientOutstanding.getPurchasedAmount()-clientOutstanding.getPaymentAmount();
     }
 
     private boolean updateCustomerOutstandingHistory(ClientOutstanding clientOutstanding) {
