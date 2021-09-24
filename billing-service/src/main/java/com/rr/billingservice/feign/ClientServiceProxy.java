@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "clientService", url = "localhost:8080")
+@FeignClient(name = "clientService", url = "${clientService.ribbon.listOfServers}")
 public interface ClientServiceProxy {
     @RequestMapping(method= RequestMethod.GET, value = "/clients")
     List<ClientDto> getAllClient();

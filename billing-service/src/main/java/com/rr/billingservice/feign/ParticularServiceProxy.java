@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "particularService", url = "localhost:8080")
+@FeignClient(name = "particularService", url = "${particularService.ribbon.listOfServers}")
 public interface ParticularServiceProxy {
 
     @PostMapping(value = "/particulars/bulkCreate")
