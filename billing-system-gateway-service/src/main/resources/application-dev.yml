@@ -37,4 +37,4 @@ spring:
         - id: dashboardService
           uri: 'lb://DASHBOARD-REPORT-SERVICE'
           predicates:
-            - Path=/dashboard/**
+            - Path=/dashboard/**, /report/**

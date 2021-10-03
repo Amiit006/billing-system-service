@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ClientAddress")
+@Table(name = "clientaddress")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

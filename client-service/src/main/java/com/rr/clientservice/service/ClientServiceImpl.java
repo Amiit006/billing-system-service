@@ -3,6 +3,7 @@ package com.rr.clientservice.service;
 import com.rr.clientservice.exception.ClientException;
 import com.rr.clientservice.model.Client;
 import com.rr.clientservice.model.ClientAddress;
+import com.rr.clientservice.model.dto.ClientMinDto;
 import com.rr.clientservice.repository.ClientAddressRepository;
 import com.rr.clientservice.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,11 @@ public class ClientServiceImpl implements ClientService {
         Client c = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientException("Client Not Present", HttpStatus.NOT_FOUND));
         return true;
+    }
+
+    @Override
+    public List<ClientMinDto> getClientsByClientIds(List<Integer> clientIds) throws ClientException {
+        List<ClientMinDto> clients = clientRepository.findByClientIdIn(clientIds).orElseThrow(() -> new ClientException("Client Not Present", HttpStatus.NOT_FOUND));
+        return clients;
     }
 }

@@ -3,6 +3,7 @@ package com.rr.clientservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rr.clientservice.exception.ClientException;
 import com.rr.clientservice.model.Client;
+import com.rr.clientservice.model.dto.ClientMinDto;
 import com.rr.clientservice.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
+import javax.xml.ws.Response;
 import java.util.*;
 
 @RestController()
@@ -69,6 +71,17 @@ public class ClientController {
         }
     }
 
+
+    @GetMapping("/byIds")
+    public ResponseEntity<?> getClientsByClientIds(@RequestParam List<Integer> clientIds) {
+        try {
+            List<ClientMinDto> clients = clientService.getClientsByClientIds(clientIds);
+            return new ResponseEntity<List<ClientMinDto>>(clients, HttpStatus.OK);
+        } catch (ClientException ex) {
+            return new ResponseEntity<String>(ex.getException(), ex.getStatus());
+        }
+    }
+
     @PostMapping("/validateClient")
     public boolean isClientPresent(@RequestBody Client client) {
         return clientService.isClientPresent(client);
@@ -81,6 +94,6 @@ public class ClientController {
         } catch (ClientException ex) {
             return new ResponseEntity<>(Collections.singletonMap("error", ex.getException()), HttpStatus.NOT_FOUND);
         }
-
     }
+
 }

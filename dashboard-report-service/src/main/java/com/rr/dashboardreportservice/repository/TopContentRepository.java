@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -25,4 +26,10 @@ public interface TopContentRepository extends JpaRepository<InvoiceDetails, Inte
 
     @Query(nativeQuery = true,value = "call sp_get_total_sell_per_month_for_one_year()")
     List<ChartResponse> getMonthlySellStats();
+
+    @Query(nativeQuery = true,value = "call sp_get_sell_total_stats(:from_date, :to_date)")
+    List<ChartResponse> getSellStats(@Param("from_date") LocalDate from_date, @Param("to_date") LocalDate to_date);
+
+    @Query(nativeQuery = true,value = "call sp_get_collection_total_stats(:from_date, :to_date)")
+    List<ChartResponse> getCollectionStats(@Param("from_date") LocalDate from_date, @Param("to_date") LocalDate to_date);
 }

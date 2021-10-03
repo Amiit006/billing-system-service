@@ -7,6 +7,7 @@ import com.rr.dashboardreportservice.repository.TopContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,6 +36,18 @@ public class TopContentServiceImpl implements  TopContentService{
     @Override
     public List<ChartResponse> getMonthlySellStats() {
         List<ChartResponse> chartResponseList = topContentRepository.getMonthlySellStats();
+        return chartResponseList;
+    }
+
+    @Override
+    public List<ChartResponse> getSellStats(LocalDate from_date, LocalDate to_date) {
+        List<ChartResponse> chartResponseList = topContentRepository.getSellStats(from_date, to_date);
+        return chartResponseList;
+    }
+
+    @Override
+    public List<ChartResponse> getCollectionStats(LocalDate from_date, LocalDate to_date) {
+        List<ChartResponse> chartResponseList = topContentRepository.getCollectionStats(from_date, to_date);
         return chartResponseList;
     }
 
