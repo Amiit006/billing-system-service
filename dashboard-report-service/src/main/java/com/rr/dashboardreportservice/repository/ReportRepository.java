@@ -20,4 +20,14 @@ public interface ReportRepository extends JpaRepository<InvoiceOverView, Integer
     @Query(nativeQuery = true, value = "call sp_get_all_collection_in_period(:from_date, :to_date)")
     List<CollectionStats> getCollectionsReport(@Param("from_date") LocalDate from_date, @Param("to_date") LocalDate to_date);
 
+    @Query(nativeQuery = true, value = "call sp_get_client_collection_in_period(:from_date, :to_date, :clientId)")
+    List<CollectionStats> getClientCollectionsReport(@Param("from_date") LocalDate from_date,
+                                               @Param("to_date") LocalDate to_date,
+                                               @Param("clientId") int clientId);
+
+    @Query(nativeQuery = true, value = "call sp_get_client_sell_in_period(:from_date, :to_date, :clientId)")
+    List<SellStats> getClientSellReport(@Param("from_date") LocalDate from_date,
+                                                     @Param("to_date") LocalDate to_date,
+                                                     @Param("clientId") int clientId);
+
 }

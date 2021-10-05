@@ -3,7 +3,6 @@ package com.rr.dashboardreportservice.service;
 import com.rr.dashboardreportservice.feign.ClientServiceProxy;
 import com.rr.dashboardreportservice.model.dto.*;
 import com.rr.dashboardreportservice.repository.ReportRepository;
-import com.rr.dashboardreportservice.repository.TopContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,9 @@ public class ReportServiceImpl implements  ReportService{
 
     @Autowired
     private ClientServiceProxy clientServiceProxy;
+
+    @Autowired
+    ClientReportService clientReportService;
 
     @Override
     public List<SellStatsResponse> getSellsReport(LocalDate form_date, LocalDate to_date) {
@@ -79,5 +81,16 @@ public class ReportServiceImpl implements  ReportService{
         }
 
         return collectionStatsResponse;
+    }
+
+    @Override
+    public ClientReportResponse getClientReport(LocalDate form_date, LocalDate to_date, int clientId) {
+        ClientReportResponse clientReportResponse = new ClientReportResponse();
+        List<CollectionStatsResponse> collectionStatsResponses = clientReportService.getClientCollectionsReport(form_date, to_date, clientId);
+        List<SellStatsResponse> sellStatsResponses = clientReportService.getClientSellsReport(form_date, to_date, clientId);
+        clientReportResponse.setClientCollection(collectionStatsResponses);
+        clientReportResponse.setClientSell(sellStatsResponses);
+
+        return clientReportResponse;
     }
 }

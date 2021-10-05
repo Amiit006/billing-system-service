@@ -12,4 +12,7 @@ import java.util.List;
 public interface ClientServiceProxy {
     @RequestMapping(method= RequestMethod.GET, value = "/clients/byIds")
     List<ClientDto> getAllClient(@RequestParam String clientIds);
+
+    @RequestMapping(method= RequestMethod.GET, value = "/clients/client")
+    ClientDto getClientById(@RequestParam("clientId") int clientId);
 }

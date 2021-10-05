@@ -1,7 +1,7 @@
 package com.rr.dashboardreportservice.controller;
 
+import com.rr.dashboardreportservice.model.dto.ClientReportResponse;
 import com.rr.dashboardreportservice.model.dto.CollectionStatsResponse;
-import com.rr.dashboardreportservice.model.dto.SellStats;
 import com.rr.dashboardreportservice.model.dto.SellStatsResponse;
 import com.rr.dashboardreportservice.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +54,11 @@ public class ReportController {
     public ResponseEntity<?> getClientReport(@RequestParam("from_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                          LocalDate from_date,
                                              @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                         LocalDate to_date) {
+                                                         LocalDate to_date,
+                                             @RequestParam("clientId") int clientId) {
         try {
-            return new ResponseEntity<>(null);
+            ClientReportResponse clientCollectionResponse = reportService.getClientReport(from_date, to_date, clientId);
+            return new ResponseEntity<>(clientCollectionResponse, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -22,4 +22,7 @@ public interface TopContentService {
     List<ChartResponse> getSellStats(LocalDate from_date, LocalDate to_date);
 
     List<ChartResponse> getCollectionStats(LocalDate from_date, LocalDate to_date);
+
+    List<ChartResponse> getSellCollectionStatsByClientId(LocalDate from_date, LocalDate to_date, int clientId);
+
 }

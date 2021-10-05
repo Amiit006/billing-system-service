@@ -13,4 +13,6 @@ public interface ReportService {
 
     List<CollectionStatsResponse> getCollectionsReport(LocalDate form_date, LocalDate to_date);
 
+    ClientReportResponse getClientReport(LocalDate form_date, LocalDate to_date, int clientId);
+
 }

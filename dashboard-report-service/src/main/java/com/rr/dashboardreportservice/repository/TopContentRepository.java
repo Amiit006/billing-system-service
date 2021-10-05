@@ -32,4 +32,7 @@ public interface TopContentRepository extends JpaRepository<InvoiceDetails, Inte
 
     @Query(nativeQuery = true,value = "call sp_get_collection_total_stats(:from_date, :to_date)")
     List<ChartResponse> getCollectionStats(@Param("from_date") LocalDate from_date, @Param("to_date") LocalDate to_date);
+
+    @Query(nativeQuery = true,value = "call sp_get_sell_col_by_client_stats(:from_date, :to_date, :clientId)")
+    List<ChartResponse> getSellCollectionStatsByClientId(LocalDate from_date, LocalDate to_date, int clientId);
 }

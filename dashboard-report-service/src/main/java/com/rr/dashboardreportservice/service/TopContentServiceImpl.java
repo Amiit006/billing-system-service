@@ -51,4 +51,10 @@ public class TopContentServiceImpl implements  TopContentService{
         return chartResponseList;
     }
 
+    @Override
+    public List<ChartResponse> getSellCollectionStatsByClientId(LocalDate from_date, LocalDate to_date, int clientId) {
+        List<ChartResponse> chartResponseList = topContentRepository.getSellCollectionStatsByClientId(from_date, to_date, clientId);
+        return chartResponseList;
+    }
+
 }

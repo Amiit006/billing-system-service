@@ -21,8 +21,8 @@ public class TopContentController {
     TopContentService topContentService;
 
     @GetMapping("/topProduct")
-    public ResponseEntity<?> getTopSellingProduct(@RequestParam("topCount") int topCount ) {
-        try{
+    public ResponseEntity<?> getTopSellingProduct(@RequestParam("topCount") int topCount) {
+        try {
             return new ResponseEntity<>(topContentService.getTopSellingProducts(topCount), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -30,8 +30,8 @@ public class TopContentController {
     }
 
     @GetMapping("/topBuyer")
-    public ResponseEntity<?> getTopBuyer(@RequestParam("topCount") int topCount ) {
-        try{
+    public ResponseEntity<?> getTopBuyer(@RequestParam("topCount") int topCount) {
+        try {
             return new ResponseEntity<>(topContentService.getTopBuyer(topCount), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -39,8 +39,8 @@ public class TopContentController {
     }
 
     @GetMapping("/sellCollectionStats")
-    public ResponseEntity<?> getSellCollectionStats(@RequestParam("year") int year ) {
-        try{
+    public ResponseEntity<?> getSellCollectionStats(@RequestParam("year") int year) {
+        try {
             return new ResponseEntity<>(topContentService.getSellCollectionStats(year), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,7 +49,7 @@ public class TopContentController {
 
     @GetMapping("/monthlySellStats")
     public ResponseEntity<?> getMonthlySellStats() {
-        try{
+        try {
             return new ResponseEntity<>(topContentService.getMonthlySellStats(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,10 +58,10 @@ public class TopContentController {
 
     @GetMapping("/sells")
     public ResponseEntity<?> getSellStats(@RequestParam("from_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                      LocalDate from_date,
+                                                  LocalDate from_date,
                                           @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                      LocalDate to_date) {
-        try{
+                                                  LocalDate to_date) {
+        try {
             return new ResponseEntity<>(topContentService.getSellStats(from_date, to_date), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -70,11 +70,24 @@ public class TopContentController {
 
     @GetMapping("/collection")
     public ResponseEntity<?> getCollectionStats(@RequestParam("from_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                  LocalDate from_date,
-                                          @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                  LocalDate to_date) {
-        try{
+                                                        LocalDate from_date,
+                                                @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                        LocalDate to_date) {
+        try {
             return new ResponseEntity<>(topContentService.getCollectionStats(from_date, to_date), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/client")
+    public ResponseEntity<?> getSellCollectionStatsByClientId(@RequestParam("from_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                      LocalDate from_date,
+                                                              @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                      LocalDate to_date,
+                                                              @RequestParam("clientId") int clientId) {
+        try {
+            return new ResponseEntity<>(topContentService.getSellCollectionStatsByClientId(from_date, to_date, clientId), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
