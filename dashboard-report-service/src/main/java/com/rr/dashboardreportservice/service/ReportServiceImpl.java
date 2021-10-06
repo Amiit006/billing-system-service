@@ -93,4 +93,31 @@ public class ReportServiceImpl implements  ReportService{
 
         return clientReportResponse;
     }
+
+    @Override
+    public List<TradeBookResponse> getTradeBookReport(LocalDate form_date, LocalDate to_date) {
+        List<TradeBook> tradeBooks = reportRepository.getTradeBookReport(form_date, to_date);
+        String joinedList = tradeBooks.stream().map(TradeBook::getClientId)
+                .map(String::valueOf).distinct().collect(Collectors.joining(","));
+
+        List<ClientDto> clientDtos = clientServiceProxy
+                .getAllClient(joinedList);
+        List<TradeBookResponse> tradeBookResponse = new ArrayList<>();
+
+        for (TradeBook tradeBook : tradeBooks) {
+            ClientDto clientDto = clientDtos.stream()
+                    .filter(x -> x.getClientId() == tradeBook.getClientId())
+                    .findFirst().get();
+            tradeBookResponse.add(
+                    TradeBookResponse.builder()
+                            .id(tradeBook.getId())
+                            .clientId(tradeBook.getClientId())
+                            .clientName(clientDto.getClientName())
+                            .amount(tradeBook.getAmount())
+                            .billPaymentDate(tradeBook.getBillPaymentDate())
+                            .transactionType(tradeBook.getTransactionType())
+                            .build());
+        }
+        return tradeBookResponse;
+    }
 }

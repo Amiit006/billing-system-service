@@ -3,6 +3,7 @@ package com.rr.dashboardreportservice.controller;
 import com.rr.dashboardreportservice.model.dto.ClientReportResponse;
 import com.rr.dashboardreportservice.model.dto.CollectionStatsResponse;
 import com.rr.dashboardreportservice.model.dto.SellStatsResponse;
+import com.rr.dashboardreportservice.model.dto.TradeBookResponse;
 import com.rr.dashboardreportservice.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -70,7 +71,8 @@ public class ReportController {
                                                 @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                             LocalDate to_date) {
         try {
-            return new ResponseEntity<>(null);
+            List<TradeBookResponse> tradeBookResponses = reportService.getTradeBookReport(from_date, to_date);
+            return new ResponseEntity<>(tradeBookResponses, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
         }
