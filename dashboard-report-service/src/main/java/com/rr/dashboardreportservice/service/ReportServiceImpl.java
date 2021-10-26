@@ -120,4 +120,12 @@ public class ReportServiceImpl implements  ReportService{
         }
         return tradeBookResponse;
     }
+
+    @Override
+    public List<ParticularReport> getParticularsReport(LocalDate form_date, LocalDate to_date) {
+//        String listString = particulars.stream().map(Object::toString)
+//                .collect(Collectors.joining(","));
+        List<ParticularReport> result = reportRepository.getParticularsReport(form_date, to_date);
+        return result;
+    }
 }

@@ -1,9 +1,6 @@
 package com.rr.dashboardreportservice.controller;
 
-import com.rr.dashboardreportservice.model.dto.ClientReportResponse;
-import com.rr.dashboardreportservice.model.dto.CollectionStatsResponse;
-import com.rr.dashboardreportservice.model.dto.SellStatsResponse;
-import com.rr.dashboardreportservice.model.dto.TradeBookResponse;
+import com.rr.dashboardreportservice.model.dto.*;
 import com.rr.dashboardreportservice.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,6 +71,19 @@ public class ReportController {
         try {
             List<TradeBookResponse> tradeBookResponses = reportService.getTradeBookReport(from_date, to_date);
             return new ResponseEntity<>(tradeBookResponses, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/particulars")
+    public ResponseEntity<?> getParticularsReport(@RequestParam("from_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                        LocalDate from_date,
+                                                @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                        LocalDate to_date) {
+        try {
+            List<ParticularReport> particularReport = reportService.getParticularsReport(from_date, to_date);
+            return new ResponseEntity<>(particularReport, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
         }
