@@ -25,4 +25,6 @@ public interface TopContentService {
 
     List<ChartResponse> getSellCollectionStatsByClientId(LocalDate from_date, LocalDate to_date, int clientId);
 
+    List<ChartResponse> getClientOutstanding(int clientId);
+
 }

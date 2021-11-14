@@ -1,5 +1,7 @@
 package com.rr.dashboardreportservice.controller;
 
+import com.rr.dashboardreportservice.model.dto.ChartResponse;
+import com.rr.dashboardreportservice.model.dto.ClientReportResponse;
 import com.rr.dashboardreportservice.service.TopContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/dashboard")
@@ -90,6 +93,16 @@ public class TopContentController {
             return new ResponseEntity<>(topContentService.getSellCollectionStatsByClientId(from_date, to_date, clientId), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/clientOutstanding")
+    public ResponseEntity<?> getClientOutstanding(@RequestParam("clientId") int clientId) {
+        try {
+            List<ChartResponse> clientCollectionResponse = topContentService.getClientOutstanding(clientId);
+            return new ResponseEntity<>(clientCollectionResponse, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

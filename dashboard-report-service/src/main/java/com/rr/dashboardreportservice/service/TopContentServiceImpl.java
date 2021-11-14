@@ -57,4 +57,10 @@ public class TopContentServiceImpl implements  TopContentService{
         return chartResponseList;
     }
 
+    @Override
+    public List<ChartResponse> getClientOutstanding(int clientId) {
+        List<ChartResponse> chartResponseList = topContentRepository.getClientOutstanding(clientId);
+        return chartResponseList;
+    }
+
 }
