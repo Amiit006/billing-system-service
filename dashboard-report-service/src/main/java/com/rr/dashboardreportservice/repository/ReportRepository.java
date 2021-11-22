@@ -1,10 +1,7 @@
 package com.rr.dashboardreportservice.repository;
 
 import com.rr.dashboardreportservice.model.InvoiceOverView;
-import com.rr.dashboardreportservice.model.dto.CollectionStats;
-import com.rr.dashboardreportservice.model.dto.ParticularReport;
-import com.rr.dashboardreportservice.model.dto.SellStats;
-import com.rr.dashboardreportservice.model.dto.TradeBook;
+import com.rr.dashboardreportservice.model.dto.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -41,4 +38,7 @@ public interface ReportRepository extends JpaRepository<InvoiceOverView, Integer
 
     @Query(nativeQuery = true, value = "call sp_get_particulars_report_in_period(:from_date, :to_date)")
     List<ParticularReport> getParticularsReport(@Param("from_date") LocalDate form_date, @Param("to_date") LocalDate to_date);
+
+    @Query(nativeQuery = true, value = "call sp_get_all_clients_outstanding()")
+    List<ClientOutstandingAmount> getClientOutstandingReport();
 }

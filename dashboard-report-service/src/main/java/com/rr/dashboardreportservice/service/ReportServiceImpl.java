@@ -128,4 +128,28 @@ public class ReportServiceImpl implements  ReportService{
         List<ParticularReport> result = reportRepository.getParticularsReport(form_date, to_date);
         return result;
     }
+
+    @Override
+    public ClientOutStandingReport getClientOutstandingReport() {
+        List<ClientOutstandingAmount> clientOutstandingAmounts = reportRepository.getClientOutstandingReport();
+
+        double purchasedAmount = clientOutstandingAmounts.stream().mapToDouble(ClientOutstandingAmount::getPurchasedAmount).sum();
+        double paymentAmount = clientOutstandingAmounts.stream().mapToDouble(ClientOutstandingAmount::getPaymentAmount).sum();
+        double outstandingAmount = clientOutstandingAmounts.stream().mapToDouble(ClientOutstandingAmount::getOutstandingAmount).sum();
+
+        List<ClientOutstandingAmountSummary> chartResponses = new ArrayList<>();
+        chartResponses.add((ClientOutstandingAmountSummary.builder()
+                .name("PurchasedAmount").value(purchasedAmount).build()));
+        chartResponses.add((ClientOutstandingAmountSummary.builder()
+                .name("PaymentAmount").value(paymentAmount).build()));
+        chartResponses.add((ClientOutstandingAmountSummary.builder()
+                .name("OutstandingAmount").value(outstandingAmount).build()));
+
+        ClientOutStandingReport clientOutStandingReport = ClientOutStandingReport.builder()
+                .clientOutstandingAmount(clientOutstandingAmounts)
+                .clientOutstandingAmountSummary(chartResponses)
+                .build();
+
+        return clientOutStandingReport;
+    }
 }

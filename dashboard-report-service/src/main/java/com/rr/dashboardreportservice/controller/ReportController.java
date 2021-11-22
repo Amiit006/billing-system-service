@@ -87,4 +87,14 @@ public class ReportController {
             return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/clientOutstanding")
+    public ResponseEntity<?> getClientOutstandingReport() {
+        try {
+            ClientOutStandingReport clientOutstandingReport = reportService.getClientOutstandingReport();
+            return new ResponseEntity<>(clientOutstandingReport, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

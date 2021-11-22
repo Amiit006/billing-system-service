@@ -18,4 +18,6 @@ public interface ReportService {
     List<TradeBookResponse> getTradeBookReport(LocalDate form_date, LocalDate to_date);
 
     List<ParticularReport> getParticularsReport(LocalDate form_date, LocalDate to_date);
+
+    ClientOutStandingReport getClientOutstandingReport();
 }
