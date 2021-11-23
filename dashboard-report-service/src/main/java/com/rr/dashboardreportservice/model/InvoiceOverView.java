@@ -44,6 +44,8 @@ public class InvoiceOverView {
     private double discountAmount;
     @Column(name="GrandTotalAmount")
     private double grandTotalAmount;
+    @Column(name="Remarks")
+    private String remarks;
     @Column(name="CreatedDate")
     private LocalDateTime createdDate;
     @Column(name="ModifiedDate")

@@ -67,9 +67,9 @@ public class InvoiceController {
     }
 
     @PutMapping(value = "/addDiscount/{clientId}/{invoiceId}")
-    public ResponseEntity<?> addDiscountToBill(@PathVariable("clientId") int clientId, @PathVariable("invoiceId") int invoiceId, @RequestBody BillAmountDetailsDto billAmountDetails) throws InvoiceException {
+    public ResponseEntity<?> addDiscountToBill(@PathVariable("clientId") int clientId, @PathVariable("invoiceId") int invoiceId, @RequestBody BillAmountDetailsDto billAmountDetails, @RequestParam("remarks") String remarks) throws InvoiceException {
         try {
-            invoiceService.addDiscountToBill(invoiceId, clientId, billAmountDetails);
+            invoiceService.addDiscountToBill(invoiceId, clientId, billAmountDetails, remarks);
             return new ResponseEntity(Collections.singletonMap("response", "Invoice saved successfully"), HttpStatus.CREATED);
         } catch (InvoiceException ex) {
             return new ResponseEntity<>(Collections.singletonMap("error",ex.getException()), ex.getStatus());

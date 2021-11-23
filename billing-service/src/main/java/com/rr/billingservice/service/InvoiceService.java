@@ -19,6 +19,6 @@ public interface InvoiceService {
 
     List<InvoiceOverView> getInvoiceByClientId(int clientId);
 
-    InvoiceOverView addDiscountToBill(int invoiceId, int clientId, BillAmountDetailsDto billAmountDetailsDto) throws InvoiceException;
+    InvoiceOverView addDiscountToBill(int invoiceId, int clientId, BillAmountDetailsDto billAmountDetailsDto, String remarks) throws InvoiceException;
 
 }

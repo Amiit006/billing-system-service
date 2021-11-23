@@ -59,7 +59,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Payment paymentToSave = buildPayment(client, payment, createdDate, modifiedDate).build();
 
         InvoiceOverView invoiceOverView =
-                buildInvoiceOverView(billAmountDetails, client, payment, paymentToSave, createdDate, modifiedDate).build();
+                buildInvoiceOverView(billAmountDetails, client, payment, paymentToSave, createdDate, modifiedDate, invoiceDetailsDto.getRemarks()).build();
 
         createParticulars(invoice);
 
@@ -92,7 +92,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Payment paymentToSave = buildPayment(client, payment, createdDate, modifiedDate).paymentId(payment.getPaymentId()).build();
 
         InvoiceOverView invoiceOverView =
-                buildInvoiceOverView(billAmountDetails, client, payment, paymentToSave, createdDate, modifiedDate)
+                buildInvoiceOverView(billAmountDetails, client, payment, paymentToSave, createdDate, modifiedDate, invoiceDetailsDto.getRemarks())
                         .invoiceId(invoiceId)
                         .build();
 
@@ -130,7 +130,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     private InvoiceOverView.InvoiceOverViewBuilder buildInvoiceOverView(BillAmountDetailsDto billAmountDetails, ClientDto client, PaymentDto payment, Payment paymentToSave
-            , LocalDateTime createdDate, LocalDateTime modifiedDate) {
+            , LocalDateTime createdDate, LocalDateTime modifiedDate, String remark) {
         return InvoiceOverView.builder()
                 .clientId(client.getClientId())
                 .payment(paymentToSave)
@@ -141,6 +141,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .discountPercentage(billAmountDetails.getOverallDiscountPercentage())
                 .discountAmount(billAmountDetails.getOverallDiscountAmount())
                 .grandTotalAmount(billAmountDetails.getGrandTotalAmount())
+                .remarks(remark)
                 .createdDate(createdDate)
                 .modifiedDate(modifiedDate);
     }
@@ -215,8 +216,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceOverView addDiscountToBill(int invoiceId, int clientId, BillAmountDetailsDto billAmountDetailsDto) throws InvoiceException {
+    public InvoiceOverView addDiscountToBill(int invoiceId, int clientId, BillAmountDetailsDto billAmountDetailsDto, String remarks) throws InvoiceException {
         InvoiceOverView invoiceOverView = invoiceOverviewRepository.findById(invoiceId).orElseThrow(() -> new InvoiceException("Invoice not found", HttpStatus.NOT_FOUND));
+
+        if(remarks.isEmpty())
+            throw new InvoiceException("Remarks is required!", HttpStatus.BAD_REQUEST);
+
         if(invoiceOverView.getSubTotalAmount() != billAmountDetailsDto.getSubTotalAmount())
             throw new InvoiceException("Subtotal mismatch!", HttpStatus.BAD_REQUEST);
         double grandTotalAmount = invoiceOverView.getGrandTotalAmount(),
@@ -246,6 +251,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                         .discountPercentage(billAmountDetailsDto.getOverallDiscountPercentage())
                         .discountAmount(billAmountDetailsDto.getOverallDiscountAmount())
                         .grandTotalAmount(grandTotalAmount)
+                        .remarks(remarks)
                         .createdDate(invoiceOverView.getCreatedDate())
                         .modifiedDate(LocalDateTime.now()).build();
         return invoiceOverviewRepository.save(updatedInvoiceOverView);

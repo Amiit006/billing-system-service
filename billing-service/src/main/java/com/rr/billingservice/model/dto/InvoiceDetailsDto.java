@@ -16,4 +16,5 @@ public class InvoiceDetailsDto {
     private BillAmountDetailsDto billAmountDetails;
     private ClientDto client;
     private PaymentDto payment;
+    private String remarks;
 }
