@@ -63,4 +63,10 @@ public class TopContentServiceImpl implements  TopContentService{
         return chartResponseList;
     }
 
+    @Override
+    public List<ChartResponse> getSellForOneYearByDayReport() {
+        List<ChartResponse> chartResponseList = topContentRepository.getSellForOneYearByDayReport();
+        return chartResponseList;
+    }
+
 }

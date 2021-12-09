@@ -27,4 +27,6 @@ public interface TopContentService {
 
     List<ChartResponse> getClientOutstanding(int clientId);
 
+    List<ChartResponse> getSellForOneYearByDayReport();
+
 }

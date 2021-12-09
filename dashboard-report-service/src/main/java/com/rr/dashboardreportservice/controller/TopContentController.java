@@ -105,4 +105,14 @@ public class TopContentController {
             return new ResponseEntity<>(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/sells/byDay")
+    public ResponseEntity<?> getSellForOneYearByDayReport() {
+        try {
+            List<ChartResponse> clientCollectionResponse = topContentService.getSellForOneYearByDayReport();
+            return new ResponseEntity<>(clientCollectionResponse, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Error while fetching data!"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
