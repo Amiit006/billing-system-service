@@ -39,5 +39,6 @@
 		<module>discovery-server-service</module>
 		<module>billing-system-gateway-service</module>
 		<module>dashboard-report-service</module>
+        <module>purchase-service</module>
     </modules>
 </project>

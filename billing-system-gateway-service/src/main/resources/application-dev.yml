@@ -38,3 +38,7 @@ spring:
           uri: 'lb://DASHBOARD-REPORT-SERVICE'
           predicates:
             - Path=/dashboard/**, /report/**
+        - id: purchaseService
+          uri: 'lb://PURCHASE-SERVICE'
+          predicates:
+            - Path=/purchase/**
