@@ -97,4 +97,17 @@ public class ReportController {
             return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/clientTradeBook")
+    public ResponseEntity<?> getClientTradeBookReport(@RequestParam("clientId") int clientId, @RequestParam("from_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                     LocalDate from_date,
+                                             @RequestParam("to_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                     LocalDate to_date) {
+        try {
+            List<ClientTradeBookResponse> clientTradeBookResponse = reportService.getClientTradeBookReport(clientId,from_date, to_date);
+            return new ResponseEntity<>(clientTradeBookResponse, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(Collections.singletonMap("",""), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

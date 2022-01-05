@@ -41,4 +41,10 @@ public interface ReportRepository extends JpaRepository<InvoiceOverView, Integer
 
     @Query(nativeQuery = true, value = "call sp_get_all_clients_outstanding()")
     List<ClientOutstandingAmount> getClientOutstandingReport();
+
+    @Query(nativeQuery = true, value = "call sp_get_client_trade_book_in_period(:clientId, :from_date, :to_date)")
+    List<ClientTradeBook> getClientTradeBookReport(@Param("clientId") int clientId,
+                                                    @Param("from_date") LocalDate form_date,
+                                                    @Param("to_date") LocalDate to_date);
+
 }

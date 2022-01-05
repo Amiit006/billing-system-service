@@ -152,4 +152,34 @@ public class ReportServiceImpl implements  ReportService{
 
         return clientOutStandingReport;
     }
+
+    @Override
+    public List<ClientTradeBookResponse> getClientTradeBookReport(int clientId, LocalDate form_date, LocalDate to_date) {
+        List<ClientTradeBook> clientTradeBooks = reportRepository.getClientTradeBookReport(clientId, form_date, to_date);
+        List<ClientTradeBookResponse> clientTradeBookResponses = new ArrayList<>();
+        double balance = 0;
+        for(ClientTradeBook clientTradeBook : clientTradeBooks) {
+            if(clientTradeBook.getType().equalsIgnoreCase("Purchase")) {
+                balance = balance + clientTradeBook.getAmount();
+                clientTradeBookResponses.add(buildClientTradeBookResponse(clientTradeBookResponses, balance, clientTradeBook, "+"));
+            } else if(clientTradeBook.getType().equalsIgnoreCase("Payment")) {
+                balance = balance - clientTradeBook.getAmount();
+                clientTradeBookResponses.add(buildClientTradeBookResponse(clientTradeBookResponses, balance, clientTradeBook, "-"));
+            } else {
+                balance = clientTradeBook.getAmount();
+                clientTradeBookResponses.add(buildClientTradeBookResponse(clientTradeBookResponses, balance, clientTradeBook, "+"));
+            }
+        }
+        return clientTradeBookResponses;
+    }
+
+    private ClientTradeBookResponse buildClientTradeBookResponse(List<ClientTradeBookResponse> clientTradeBookResponses, double balance, ClientTradeBook clientTradeBook, String op) {
+        return ClientTradeBookResponse.builder()
+                .clientName("Amit").amount(op + " " + clientTradeBook.getAmount())
+                .date(clientTradeBook.getDate())
+                .remark(clientTradeBook.getRemark())
+                .type(clientTradeBook.getType())
+                .balance(balance)
+                .build();
+    }
 }
