@@ -167,19 +167,35 @@ public class ReportServiceImpl implements  ReportService{
                 clientTradeBookResponses.add(buildClientTradeBookResponse(clientTradeBookResponses, balance, clientTradeBook, "-"));
             } else {
                 balance = clientTradeBook.getAmount();
-                clientTradeBookResponses.add(buildClientTradeBookResponse(clientTradeBookResponses, balance, clientTradeBook, "+"));
+                clientTradeBookResponses.add(buildClientTradeBookResponse(clientTradeBookResponses, balance, clientTradeBook, "*"));
             }
         }
         return clientTradeBookResponses;
     }
 
     private ClientTradeBookResponse buildClientTradeBookResponse(List<ClientTradeBookResponse> clientTradeBookResponses, double balance, ClientTradeBook clientTradeBook, String op) {
+        if(op.equalsIgnoreCase("+"))
         return ClientTradeBookResponse.builder()
-                .clientName("Amit").amount(op + " " + clientTradeBook.getAmount())
+                .billAmount(op + " " + clientTradeBook.getAmount())
                 .date(clientTradeBook.getDate())
                 .remark(clientTradeBook.getRemark())
                 .type(clientTradeBook.getType())
                 .balance(balance)
                 .build();
+        else if(op.equalsIgnoreCase("-"))
+            return ClientTradeBookResponse.builder()
+                    .paymentAmount(op + " " + clientTradeBook.getAmount())
+                    .date(clientTradeBook.getDate())
+                    .remark(clientTradeBook.getRemark())
+                    .type(clientTradeBook.getType())
+                    .balance(balance)
+                    .build();
+        else
+            return ClientTradeBookResponse.builder()
+                    .date(clientTradeBook.getDate())
+                    .remark(clientTradeBook.getRemark())
+                    .type(clientTradeBook.getType())
+                    .balance(balance)
+                    .build();
     }
 }

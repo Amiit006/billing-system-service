@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class ClientTradeBookResponse {
-    String clientName;
-    String amount;
+    String billAmount;
+    String paymentAmount;
     LocalDate date;
     String type;
     String remark;
