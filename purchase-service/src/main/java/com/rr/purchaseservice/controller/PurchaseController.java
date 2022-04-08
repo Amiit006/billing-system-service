@@ -28,11 +28,19 @@ public class PurchaseController {
         }
     }
 
+    @GetMapping()
+    public ResponseEntity<?> getPurchasesBySeason(@RequestParam("seasonId") int seasonId) {
+        List<Purchase> purchases =  purchaseService.getPurchasesBySeason(seasonId);
+        return new ResponseEntity<>(purchases, HttpStatus.OK);
+    }
+
     @GetMapping("/purchases")
     public ResponseEntity<?> getPurchases() {
         List<Purchase> purchases =  purchaseService.getAllPurchase();
         return new ResponseEntity<>(purchases, HttpStatus.OK);
     }
+
+
 
     @DeleteMapping()
     public ResponseEntity<?> deletePurchases(@RequestParam("purchaseId") int purchaseId) {

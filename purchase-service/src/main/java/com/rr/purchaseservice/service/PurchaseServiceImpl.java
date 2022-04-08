@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,6 +24,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     public List<Purchase> getAllPurchase() {
         List<Purchase> purchases = purchaseRepository.findAll();
         return purchases;
+    }
+
+    @Override
+    public List<Purchase> getPurchasesBySeason(int seasonId) {
+        List<Purchase> purchase = purchaseRepository.findBySeasonId(seasonId);
+        return purchase;
     }
 
     @Override

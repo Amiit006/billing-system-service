@@ -8,9 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SeasonServiceImpl implements SeasonService {
@@ -20,7 +23,10 @@ public class SeasonServiceImpl implements SeasonService {
 
     @Override
     public List<Season> findAllSeasons() {
-        return seasonRepository.findAll();
+        return seasonRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Season::getStartDate))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -31,6 +37,7 @@ public class SeasonServiceImpl implements SeasonService {
             throw new SeasonException("End Date can't be before start Date", HttpStatus.BAD_REQUEST);
         if(seasonRepository.findBySeasonName(season.getSeasonName()) != null)
             throw new SeasonException("Season Name already exists", HttpStatus.BAD_REQUEST);
+        validateSeasonPriorCreation(season);
         Season season1 = Season.builder()
                         .seasonName(season.getSeasonName())
                 .startDate(season.getStartDate())
@@ -40,6 +47,37 @@ public class SeasonServiceImpl implements SeasonService {
                         .build();
         seasonRepository.save(season1);
         return season1;
+    }
+
+    private void validateSeasonPriorCreation(Season newSeason) throws SeasonException{
+        List<Season> existingSeasons = findAllSeasons();
+        for (Season existingSeason: existingSeasons) {
+            if(isWithinRange(newSeason.getStartDate(), existingSeason.getStartDate(), existingSeason.getEndDate()))
+                throw new SeasonException("Season duration collides with other season", HttpStatus.BAD_REQUEST);
+            if(isWithinRange(newSeason.getEndDate(), existingSeason.getStartDate(), existingSeason.getEndDate()))
+                throw new SeasonException("Season duration collides with other season", HttpStatus.BAD_REQUEST);
+            if(newSeason.getEndDate().isBefore(existingSeason.getEndDate())) {
+                if(newSeason.getStartDate().isAfter(existingSeason.getStartDate())
+                    || newSeason.getEndDate().isAfter(existingSeason.getStartDate())
+                    || newSeason.getEndDate().isEqual(existingSeason.getEndDate())) {
+                    throw new SeasonException("Season duration collides with other season", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                if(newSeason.getStartDate().isBefore(existingSeason.getStartDate())
+                        || (newSeason.getStartDate().isAfter(existingSeason.getStartDate())
+                            && newSeason.getStartDate().isBefore(existingSeason.getEndDate()))) {
+                    throw new SeasonException("Season duration collides with other season", HttpStatus.BAD_REQUEST);
+                }
+            }
+
+
+        }
+    }
+
+    private boolean isWithinRange(LocalDate testDate, LocalDate startDate, LocalDate endDate) {
+        return testDate.isEqual(startDate) ||
+                testDate.isEqual(endDate) ||
+                (testDate.isAfter(startDate) && testDate.isBefore(endDate));
     }
 
     @Override

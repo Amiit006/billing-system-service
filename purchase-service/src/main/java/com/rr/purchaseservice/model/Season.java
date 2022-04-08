@@ -1,5 +1,6 @@
 package com.rr.purchaseservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -23,8 +24,10 @@ public class Season {
     @Column(name = "SeasonName")
     String seasonName;
     @Column(name = "StartDate")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd[ ][HH][:mm][:ss][.SSS][.SS][.S]")
     LocalDate startDate;
     @Column(name = "EndDate")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd[ ][HH][:mm][:ss][.SSS][.SS][.S]")
     LocalDate endDate;
     @Column(name = "CreatedDate")
     LocalDateTime createdDate;
